@@ -17,4 +17,13 @@ describe 'CF PHP Buildpack' do
       expect(browser).to have_body('TEST_ENV_VAR')
     end
   end
+
+  context 'deploying a PHP app with .profile script' do
+    let(:app_name) { 'php_app_with_profile_script' }
+
+    it "sets environment variables via .profile script" do
+      browser.visit_path('/')
+      expect(browser).to have_body('PROFILE_SCRIPT_IS_PRESENT_AND_RAN')
+    end
+  end
 end
