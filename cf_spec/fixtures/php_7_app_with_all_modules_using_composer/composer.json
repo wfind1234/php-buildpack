@@ -39,6 +39,7 @@
         "ext-xsl": "*",
         "ext-yaf": "*",
         "ext-zip": "*",
-        "ext-zlib": "*"
+        "ext-zlib": "*",
+        "ext-rdkafka": "*"
     }
 }
