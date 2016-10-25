@@ -116,7 +116,11 @@ class ComposerConfiguration(object):
     def read_version_from_composer(self, key):
         (json_path, lock_path) = find_composer_paths(self._ctx)
         if json_path is not None:
-            composer = json.load(open(json_path, 'r'))
+            try:
+                composer = json.load(open(json_path, 'r'))
+            except ValueError, e:
+                sys.tracebacklimit = 0
+                raise RuntimeError('Invalid JSON present in composer.json. Parser said: "{0}"'.format(e.message))
             require = composer.get('require', {})
             return require.get(key, None)
         if lock_path is not None:

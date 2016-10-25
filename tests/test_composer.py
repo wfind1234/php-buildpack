@@ -346,6 +346,15 @@ class TestComposer(object):
         php_version = config.read_version_from_composer('php')
         eq_('>=5.3', php_version)
 
+    def test_composer_invalid_json(self):
+        ctx = {'BUILD_DIR': 'tests/data/composer-invalid-json', 'WEBDIR': ''}
+        config = self.extension_module.ComposerConfiguration(ctx)
+        try:
+            config.read_version_from_composer('php')
+        except RuntimeError, e:
+            eq_('Invalid JSON present in composer.json. Parser said: '
+                '"Expecting , delimiter: line 6 column 5 (char 67)"', e.message)
+
     def test_pick_php_version(self):
         ctx = {
             'PHP_VERSION': '5.5.15',
