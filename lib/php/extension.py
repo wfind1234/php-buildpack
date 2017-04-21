@@ -15,6 +15,8 @@
 import os
 import string
 import json
+import glob
+from build_pack_utils import utils
 from compile_helpers import convert_php_extensions
 from compile_helpers import is_web_app
 from compile_helpers import find_stand_alone_app_to_run
@@ -23,7 +25,6 @@ from compile_helpers import find_all_php_versions
 from compile_helpers import validate_php_version
 from compile_helpers import validate_php_extensions
 from extension_helpers import ExtensionHelper
-from extension_helpers import PHPExtensionHelper
 
 def find_composer_paths(ctx):
     build_dir = ctx['BUILD_DIR']
@@ -61,6 +62,19 @@ def find_composer_paths(ctx):
             lock_path = path
 
     return (json_path, lock_path)
+
+def include_fpm_d_confs(ctx):
+    php_fpm_path = os.path.join(ctx['BUILD_DIR'], 'php',
+                                      'etc', 'php-fpm.conf')
+    php_fpm = utils.ConfigFileEditor(php_fpm_path)
+    php_fpm_d_path = os.path.join(ctx['BUILD_DIR'], 'php',
+                                      'etc', 'fpm.d')
+    if len(glob.glob(php_fpm_d_path + '/*.conf')) > 0:
+        php_fpm.update_lines(
+        '^;include=@\{HOME\}/php/etc/fpm.d/\*\.conf$',
+        'include=@{HOME}/php/etc/fpm.d/*.conf',
+        )
+        php_fpm.save(php_fpm_path)
 
 
 class PHPExtension(ExtensionHelper):
@@ -138,15 +152,8 @@ class PHPExtension(ExtensionHelper):
                 .rewrite()
                 .done())
 
-        ext = PHPExtensionHelper(ctx)
-        ext.load_config()
+        include_fpm_d_confs(ctx)
 
-        if ext._php_fpm_d_exists is True:
-            ext._php_fpm.update_lines(
-            '^;include=@\{HOME\}/php/etc/fpm.d/\*\.conf$',
-            'include=@{HOME}/php/etc/fpm.d/*.conf',
-            )
-            ext._php_fpm.save(ext._php_fpm_path)
         return 0
 
 

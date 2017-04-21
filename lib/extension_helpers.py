@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
-import glob
 from build_pack_utils import utils
 
 
@@ -162,7 +161,6 @@ class PHPExtensionHelper(ExtensionHelper):
         self._php_ini = None
         self._php_fpm = None
         self._php_api = None
-        self._php_fpm_d_exists = False
 
     def load_config(self):
         if not self._php_ini:
@@ -173,10 +171,6 @@ class PHPExtensionHelper(ExtensionHelper):
             self._php_fpm_path = os.path.join(self._ctx['BUILD_DIR'], 'php',
                                               'etc', 'php-fpm.conf')
             self._php_fpm = utils.ConfigFileEditor(self._php_fpm_path)
-        self._php_fpm_d_path = os.path.join(self._ctx['BUILD_DIR'], 'php',
-                                          'etc', 'fpm.d')
-        if len(glob.glob(self._php_fpm_d_path + '/*.conf')) > 0:
-            self._php_fpm_d_exists = True
         if not self._php_api:
             self._php_api = self._get_api()
 
