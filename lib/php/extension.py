@@ -23,6 +23,7 @@ from compile_helpers import find_all_php_versions
 from compile_helpers import validate_php_version
 from compile_helpers import validate_php_extensions
 from extension_helpers import ExtensionHelper
+from extension_helpers import PHPExtensionHelper
 
 def find_composer_paths(ctx):
     build_dir = ctx['BUILD_DIR']
@@ -136,6 +137,16 @@ class PHPExtension(ExtensionHelper):
                 .to('php/etc')
                 .rewrite()
                 .done())
+
+        ext = PHPExtensionHelper(ctx)
+        ext.load_config()
+
+        if ext._php_fpm_d_exists is True:
+            ext._php_fpm.update_lines(
+            '^;include=@\{HOME\}/php/etc/fpm.d/\*\.conf$',
+            'include=@{HOME}/php/etc/fpm.d/*.conf',
+            )
+            ext._php_fpm.save(ext._php_fpm_path)
         return 0
 
 
