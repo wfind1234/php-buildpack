@@ -115,6 +115,11 @@ class PHPExtension(ExtensionHelper):
         }
         if 'snmp' in self._ctx['PHP_EXTENSIONS']:
             env['MIBDIRS'] = '$HOME/php/mibs'
+
+        php_ini_d_path = os.path.join(self._ctx['BUILD_DIR'], 'php', 'etc', 'php.ini.d')
+        if os.path.exists(php_ini_d_path):
+            env['PHP_INI_SCAN_DIR'] = '$HOME/php/etc/php.ini.d/'
+
         return env
 
     def _compile(self, install):
