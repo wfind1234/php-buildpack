@@ -24,36 +24,29 @@ describe 'CF PHP Buildpack' do
     end
   end
 
-  # context 'deploying a PHP7 app with custom conf files in fpm.d dir in app root' do
-  #   let(:app_name) { 'php_7_with_fpm_d' }
+  context 'deploying a PHP7 app with custom conf files in fpm.d dir in app root' do
+    let(:app_name) { 'php_7_with_php_ini_d' }
 
-  #   it 'expects an app to be running' do
-  #     expect(app).to be_running
-  #   end
+    it 'expects an app to be running' do
+      expect(app).to be_running
+    end
 
-  #   it 'sets custom configurations' do
-  #     browser.visit_path('/index.php')
-  #     expect(browser).to have_body 'TEST_HOME_PATH'
-  #     expect(browser).to have_body '/home/vcap/app/test/path'
-  #     expect(browser).to have_body 'TEST_WEBDIR'
-  #     expect(browser).to have_body 'htdocs'
-  #   end
-  # end
+    it 'sets custom configurations' do
+      browser.visit_path('/index.php')
+      expect(browser).to have_body 'teststring'
+    end
+  end
 
-  # context 'deploying a PHP71 app with custom conf files in fpm.d dir in app root' do
-  #   let(:app_name) { 'php_71_with_fpm_d' }
+  context 'deploying a PHP71 app with custom conf files in fpm.d dir in app root' do
+    let(:app_name) { 'php_71_with_php_ini_d' }
 
-  #   it 'expects an app to be running' do
-  #     expect(app).to be_running
-  #   end
+    it 'expects an app to be running' do
+      expect(app).to be_running
+    end
 
-  #   it 'sets custom configurations' do
-  #     browser.visit_path('/index.php')
-  #     expect(browser).to have_body 'TEST_HOME_PATH'
-  #     expect(browser).to have_body '/home/vcap/app/test/path'
-  #     expect(browser).to have_body 'TEST_WEBDIR'
-  #     expect(browser).to have_body 'htdocs'
-  #   end
-  # end
+    it 'sets custom configurations' do
+      browser.visit_path('/index.php')
+      expect(browser).to have_body 'teststring'
+    end
+  end
 end
-
