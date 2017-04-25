@@ -162,7 +162,7 @@ def _parse_extensions_from_ini_file(file):
 
 def validate_php_ini_extensions(ctx):
     all_supported =  _get_supported_php_extensions(ctx) + _get_compiled_modules(ctx)
-    ini_files = glob.glob(os.path.join(ctx["BUILD_DIR"], 'php', 'etc', 'php.ini.d', '*.ini'))
+    ini_files = glob.glob(os.path.join(ctx["BUILD_DIR"], '.bp-config', 'php', 'php.ini.d', '*.ini'))
 
     for file in ini_files:
         extensions = _parse_extensions_from_ini_file(file)

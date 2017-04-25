@@ -24,6 +24,7 @@ from compile_helpers import load_manifest
 from compile_helpers import find_all_php_versions
 from compile_helpers import validate_php_version
 from compile_helpers import validate_php_extensions
+from compile_helpers import validate_php_ini_extensions
 from extension_helpers import ExtensionHelper
 
 def find_composer_paths(ctx):
@@ -63,6 +64,7 @@ def find_composer_paths(ctx):
 
     return (json_path, lock_path)
 
+# TODO move inside stuff on line 164
 def include_fpm_d_confs(ctx):
     php_fpm_path = os.path.join(ctx['BUILD_DIR'], 'php',
                                       'etc', 'php-fpm.conf')
@@ -150,9 +152,10 @@ class PHPExtension(ExtensionHelper):
             .package('PHP')
             .done())
 
-        validate_php_extensions(ctx)
         validate_php_ini_extensions(ctx)
+        validate_php_extensions(ctx)
         convert_php_extensions(ctx)
+
         (install
             .config()
                 .from_application('.bp-config/php')  # noqa
