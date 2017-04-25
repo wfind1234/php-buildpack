@@ -171,6 +171,12 @@ def validate_php_ini_extensions(ctx):
                 raise RuntimeError("The extension '%s' is not provided by this buildpack." % ext)
 
 
+def include_fpm_d_confs(ctx):
+    ctx['PHP_FPM_CONF_INCLUDE'] = ''
+    php_fpm_d_path = os.path.join(ctx['BUILD_DIR'], '.bp-config', 'php', 'fpm.d')
+    if len(glob.glob(os.path.join(php_fpm_d_path, '*.conf'))) > 0:
+        ctx['PHP_FPM_CONF_INCLUDE'] = 'include=$HOME/php/etc/fpm.d/*.conf'
+
 
 def convert_php_extensions(ctx):
     _log.debug('Converting PHP extensions')

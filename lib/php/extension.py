@@ -25,6 +25,7 @@ from compile_helpers import find_all_php_versions
 from compile_helpers import validate_php_version
 from compile_helpers import validate_php_extensions
 from compile_helpers import validate_php_ini_extensions
+from compile_helpers import include_fpm_d_confs
 from extension_helpers import ExtensionHelper
 
 def find_composer_paths(ctx):
@@ -63,13 +64,6 @@ def find_composer_paths(ctx):
             lock_path = path
 
     return (json_path, lock_path)
-
-# TODO move inside stuff on line 164
-def include_fpm_d_confs(ctx):
-    ctx['PHP_FPM_CONF_INCLUDE'] = ''
-    php_fpm_d_path = os.path.join(ctx['BUILD_DIR'], '.bp-config', 'php', 'fpm.d')
-    if len(glob.glob(os.path.join(php_fpm_d_path, '*.conf'))) > 0:
-        ctx['PHP_FPM_CONF_INCLUDE'] = "include=@{HOME}/php/etc/fpm.d/*.conf"
 
 
 class PHPExtension(ExtensionHelper):
