@@ -66,17 +66,10 @@ def find_composer_paths(ctx):
 
 # TODO move inside stuff on line 164
 def include_fpm_d_confs(ctx):
-    php_fpm_path = os.path.join(ctx['BUILD_DIR'], 'php',
-                                      'etc', 'php-fpm.conf')
-    php_fpm = utils.ConfigFileEditor(php_fpm_path)
-    php_fpm_d_path = os.path.join(ctx['BUILD_DIR'], 'php',
-                                      'etc', 'fpm.d')
-    if len(glob.glob(php_fpm_d_path + '/*.conf')) > 0:
-        php_fpm.update_lines(
-        '^;include=@\{HOME\}/php/etc/fpm.d/\*\.conf$',
-        'include=@{HOME}/php/etc/fpm.d/*.conf',
-        )
-        php_fpm.save(php_fpm_path)
+    ctx['PHP_FPM_CONF_INCLUDE'] = ''
+    php_fpm_d_path = os.path.join(ctx['BUILD_DIR'], '.bp-config', 'php', 'fpm.d')
+    if len(glob.glob(os.path.join(php_fpm_d_path, '*.conf'))) > 0:
+        ctx['PHP_FPM_CONF_INCLUDE'] = "include=@{HOME}/php/etc/fpm.d/*.conf"
 
 
 class PHPExtension(ExtensionHelper):
@@ -155,6 +148,7 @@ class PHPExtension(ExtensionHelper):
         validate_php_ini_extensions(ctx)
         validate_php_extensions(ctx)
         convert_php_extensions(ctx)
+        include_fpm_d_confs(ctx)
 
         (install
             .config()
@@ -163,8 +157,6 @@ class PHPExtension(ExtensionHelper):
                 .to('php/etc')
                 .rewrite()
                 .done())
-
-        include_fpm_d_confs(ctx)
 
         return 0
 
