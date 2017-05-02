@@ -12,7 +12,7 @@ describe 'CF PHP Buildpack' do
   context 'deploying a Zend app with locally-vendored dependencies', :cached do
     let(:app_name) { 'zend_local_deps' }
     let(:options) do
-      {}
+      {env: {'CF_STACK' => 'cflinuxfs3'}}
     end
 
     specify do

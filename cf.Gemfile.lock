@@ -8,10 +8,8 @@ GIT
       kwalify (~> 0)
       terminal-table (~> 1.4)
 
-GIT
-  remote: https://github.com/cloudfoundry/machete
-  revision: c940e3a514a8656828fbb06a701f2cd00ed34fcb
-  tag: v0.0.66
+PATH
+  remote: ../machete
   specs:
     machete (0.0.66)
       childprocess
