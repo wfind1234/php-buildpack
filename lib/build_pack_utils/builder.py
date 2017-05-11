@@ -211,6 +211,7 @@ class Installer(object):
         return self
 
     def build_pack_utils(self):
+        print "Install buildpack utils"
         self._log.info("Installed build pack utils.")
         (self.builder.copy()
              .under('{BP_DIR}/lib/build_pack_utils')
