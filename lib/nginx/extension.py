@@ -12,6 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
+#
+# def _should_compile(ctx):
+#     if os.getenv('PHP_FPM_LISTEN'):
+#         ctx['PHP_FPM_LISTEN'] = os.getenv('PHP_FPM_LISTEN')
+#         return False
+#     return
 
 
 def preprocess_commands(ctx):
@@ -33,8 +40,22 @@ def service_environment(ctx):
 
 
 def compile(install):
+    if os.getenv('PHP_FPM_LISTEN'):
+        install.builder._ctx['PHP_FPM_LISTEN'] = os.getenv('PHP_FPM_LISTEN')
+        return 0
+
     print 'Installing Nginx'
     install.builder._ctx['PHP_FPM_LISTEN'] = '{TMPDIR}/php-fpm.socket'
+
+    ctx = install.builder._ctx
+    env_dir = '%s/%s/env' % (ctx['DEPS_DIR'], ctx['DEPS_IDX'])
+    if not os.path.exists(env_dir):
+        os.makedirs(env_dir)
+
+    target = open('%s/PHP_FPM_LISTEN' % env_dir, 'w')
+    target.write("%s/php-fpm.socket" % ctx['TMPDIR'])
+    target.close()
+
     (install
         .package('NGINX')
         .config()

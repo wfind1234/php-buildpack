@@ -40,9 +40,11 @@ class CloudFoundryUtil(object):
         # Build Pack Location
         ctx['BP_DIR'] = os.path.dirname(os.path.dirname(sys.argv[0]))
         # User's Application Files, build droplet here
+
+        ctx['CACHE_DIR'] = sys.argv[2]
         ctx['BUILD_DIR'] = sys.argv[1]
-        # Cache space for the build pack
-        ctx['CACHE_DIR'] = (len(sys.argv) == 3) and sys.argv[2] or None
+        ctx['DEPS_DIR'] = sys.argv[3]
+        ctx['DEPS_IDX'] = sys.argv[4]
         # Temp space
         if 'TMPDIR' not in ctx.keys():
             ctx['TMPDIR'] = tempfile.gettempdir()
