@@ -38,6 +38,10 @@ for env_var in $env_vars; do
 done
 $BP/compile-extensions/bin/write_profiled_from_supply $DEPS_DIR $BUILD_DIR
 
+## REMOVE ME
+export PATH=$BUILD_DIR/php/bin:$PATH
+echo $PATH
+
 export PYTHONPATH=$BP/lib
 python $BP/scripts/finalize.py $BUILD_DIR $CACHE_DIR $DEPS_DIR $DEPS_IDX
 $BP/compile-extensions/bin/store_buildpack_metadata $BP $CACHE_DIR

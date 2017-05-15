@@ -12,7 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import os
+from compile_helpers import write_env_file
 
 def preprocess_commands(ctx):
     return ((
@@ -37,10 +38,20 @@ def service_environment(ctx):
 
 
 def compile(install):
-    print 'Installing HTTPD'
-    print 'HTTPD %s' % (install.builder._ctx['HTTPD_VERSION'])
+    ctx = install.builder._ctx
+    if os.getenv('PHP_FPM_LISTEN'):
+        ctx['PHP_FPM_LISTEN'] = os.getenv('PHP_FPM_LISTEN')
+        return 0
 
-    install.builder._ctx['PHP_FPM_LISTEN'] = '127.0.0.1:9000'
+    print 'Installing Nginx'
+    ctx['PHP_FPM_LISTEN'] = '{TMPDIR}/php-fpm.socket'
+
+    write_env_file(ctx, 'PHP_FPM_LISTEN', '%s/php-fpm.socket' % ctx['TMPDIR'])
+
+    print 'Installing HTTPD'
+    print 'HTTPD %s' % (ctx['HTTPD_VERSION'])
+
+    ctx['PHP_FPM_LISTEN'] = '127.0.0.1:9000'
     (install
         .package('HTTPD')
         .config()

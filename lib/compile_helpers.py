@@ -210,6 +210,15 @@ def find_stand_alone_app_to_run(ctx):
             app = 'app.php'
     return app
 
+def write_env_file(ctx, key, value):
+    env_dir = '%s/%s/env' % (ctx['DEPS_DIR'], ctx['DEPS_IDX'])
+    if not os.path.exists(env_dir):
+        os.makedirs(env_dir)
+
+    target = open('%s/%s' % (env_dir, key), 'w')
+    target.write(value)
+    target.close()
+
 def warn_invalid_php_version(requested, default, docslink):
     warning = ("WARNING: PHP version {} not available, using default version ({}). "
                "In future versions of the buildpack, specifying a non-existent PHP version will cause staging to fail. "

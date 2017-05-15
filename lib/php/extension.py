@@ -16,6 +16,7 @@ import os
 import string
 import json
 import glob
+import subprocess
 from build_pack_utils import utils
 from compile_helpers import convert_php_extensions
 from compile_helpers import is_web_app
@@ -113,6 +114,10 @@ class PHPExtension(ExtensionHelper):
 
     def _compile(self, install):
         ctx = install.builder._ctx
+        print os.path.join(ctx['BUILD_DIR'], 'php', 'bin', 'php')
+        subprocess.call('ls -l %s' % os.path.join(ctx['BUILD_DIR'], 'php', 'bin'), shell=True)
+        if os.path.exists(os.path.join(ctx['BUILD_DIR'], 'php', 'bin', 'php')):
+            return 0
 
         (composer_json_file, composer_lock_file) = find_composer_paths(ctx)
         options_json_file = os.path.join(ctx['BUILD_DIR'],'.bp-config', 'options.json')
