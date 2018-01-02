@@ -59,6 +59,8 @@ GEM
     rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
+    rspec-retry (0.5.6)
+      rspec-core (> 3.3, < 3.8)
     rspec-support (3.5.0)
     semantic (1.6.0)
     slop (3.6.0)
@@ -79,9 +81,10 @@ DEPENDENCIES
   pry
   rspec
   rspec-instafail
+  rspec-retry
 
 RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.15.4
+   1.16.1
