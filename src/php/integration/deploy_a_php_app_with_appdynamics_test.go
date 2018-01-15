@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = FDescribe("CF PHP Buildpack", func() {
+var _ = Describe("CF PHP Buildpack", func() {
 	var app *cutlass.App
 	RunCf := func(args ...string) error {
 		command := exec.Command("cf", args...)
