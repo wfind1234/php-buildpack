@@ -75,9 +75,13 @@ func TestIntegration(t *testing.T) {
 	RunSpecs(t, "Integration Suite")
 }
 
+func ConfirmRunning(app *cutlass.App) {
+	Eventually(func() ([]string, error) { return app.InstanceStates() }, 20*time.Second).Should(Equal([]string{"RUNNING"}))
+}
+
 func PushAppAndConfirm(app *cutlass.App) {
 	Expect(app.Push()).To(Succeed())
-	Eventually(func() ([]string, error) { return app.InstanceStates() }, 20*time.Second).Should(Equal([]string{"RUNNING"}))
+	ConfirmRunning(app)
 	Expect(app.ConfirmBuildpack(buildpackVersion)).To(Succeed())
 }
 
