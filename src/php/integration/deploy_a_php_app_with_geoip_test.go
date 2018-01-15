@@ -37,7 +37,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 	})
 
 	Context("in offline mode", func() {
-		SkipUnlessCached()
+		BeforeEach(func() { SkipUnlessCached() })
 
 		It("downloads the binaries directly from the buildpack", func() {
 			app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "php_geoip_app_local_deps"))
