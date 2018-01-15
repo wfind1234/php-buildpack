@@ -11,6 +11,7 @@ binaries/trusty/*
 /log/
 vendor
 !/vendor
+!/src/php/vendor/
 *.DS_Store
 .bundle
 DebugKit
