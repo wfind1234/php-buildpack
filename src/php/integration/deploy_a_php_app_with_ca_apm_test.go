@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = FDescribe("CF PHP Buildpack", func() {
+var _ = Describe("CF PHP Buildpack", func() {
 	var app *cutlass.App
 	RunCf := func(args ...string) error {
 		command := exec.Command("cf", args...)
@@ -24,7 +24,7 @@ var _ = FDescribe("CF PHP Buildpack", func() {
 		_ = RunCf("delete-service", "-f", "caapm-test-service")
 	})
 
-	It("configures appdynamics", func() {
+	It("configures ca apm", func() {
 		app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "with_ca_apm"))
 		app.SetEnv("BP_DEBUG", "true")
 		Expect(app.PushNoStart()).To(Succeed())
