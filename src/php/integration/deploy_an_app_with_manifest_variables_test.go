@@ -20,7 +20,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 			app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 			PushAppAndConfirm(app)
 		})
-		FIt("logs variables from manifest.yml", func() {
+		It("logs variables from manifest.yml", func() {
 			Expect(app.Stdout.String()).To(ContainSubstring("MANIFEST_VARIABLE: 'VARIABLE_IS_SET'"))
 			Expect(app.Stdout.String()).To(ContainSubstring("PHP said MANIFEST_VARIABLE: VARIABLE_IS_SET"))
 		})
