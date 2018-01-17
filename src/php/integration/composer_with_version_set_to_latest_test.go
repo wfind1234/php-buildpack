@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = FDescribe("Composer with version set to 'latest'", func() {
+var _ = Describe("Composer with version set to 'latest'", func() {
 	var app *cutlass.App
 	AfterEach(func() { app = DestroyApp(app) })
 
