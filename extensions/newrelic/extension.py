@@ -171,7 +171,8 @@ class NewRelicInstaller(object):
         source      = os.path.join(self._ctx['BP_DIR'], 'extensions', 'newrelic', 'newrelic_env.sh')
         dest        = os.path.join(self._ctx['BUILD_DIR'], '.profile.d', '0_newrelic_env.sh')
         dest_folder = os.path.join(self._ctx['BUILD_DIR'], '.profile.d')
-        self.create_folder(dest_folder)
+        if not os.path.exists(dest_folder):
+            os.makedirs(dest_folder)
         shutil.copyfile(source, dest)
 
 # Extension Methods
