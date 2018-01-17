@@ -166,6 +166,12 @@ class NewRelicInstaller(object):
             for line in lines:
                 php_ini.write(line)
 
+    def adding_environment_variables(self):
+        source      = os.path.join(self._ctx['BP_DIR'], 'extensions', 'newrelic', 'newrelic_env.sh')
+        dest        = os.path.join(self._ctx['BUILD_DIR'], '.profile.d', '0_newrelic_env.sh')
+        dest_folder = os.path.join(self._ctx['BUILD_DIR'], '.profile.d')
+        self.create_folder(dest_folder)
+        os.copy(source, dest)
 
 # Extension Methods
 def preprocess_commands(ctx):
@@ -185,6 +191,7 @@ def compile(install):
         _log.info("Installing NewRelic")
         install.package('NEWRELIC')
         _log.info("Configuring NewRelic in php.ini")
+        newrelic.adding_environment_variables()
         newrelic.modify_php_ini()
         _log.info("NewRelic Installed.")
     return 0
