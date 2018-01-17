@@ -39,29 +39,31 @@ type cfInstance struct {
 }
 
 type App struct {
-	Name       string
-	Path       string
-	Stack      string
-	Buildpacks []string
-	Memory     string
-	Disk       string
-	Stdout     *bytes.Buffer
-	appGUID    string
-	env        map[string]string
-	logCmd     *exec.Cmd
+	Name         string
+	Path         string
+	Stack        string
+	Buildpacks   []string
+	Memory       string
+	Disk         string
+	StartCommand string
+	Stdout       *bytes.Buffer
+	appGUID      string
+	env          map[string]string
+	logCmd       *exec.Cmd
 }
 
 func New(fixture string) *App {
 	return &App{
-		Name:       filepath.Base(fixture) + "-" + RandStringRunes(20),
-		Path:       fixture,
-		Stack:      "",
-		Buildpacks: []string{},
-		Memory:     DefaultMemory,
-		Disk:       DefaultDisk,
-		appGUID:    "",
-		env:        map[string]string{},
-		logCmd:     nil,
+		Name:         filepath.Base(fixture) + "-" + RandStringRunes(20),
+		Path:         fixture,
+		Stack:        "",
+		Buildpacks:   []string{},
+		Memory:       DefaultMemory,
+		Disk:         DefaultDisk,
+		StartCommand: "",
+		appGUID:      "",
+		env:          map[string]string{},
+		logCmd:       nil,
 	}
 }
 
@@ -238,6 +240,9 @@ func (a *App) PushNoStart() error {
 	}
 	if a.Disk != "" {
 		args = append(args, "-k", a.Disk)
+	}
+	if a.StartCommand != "" {
+		args = append(args, "-c", a.StartCommand)
 	}
 	command := exec.Command("cf", args...)
 	command.Stdout = DefaultStdoutStderr
