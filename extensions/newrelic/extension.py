@@ -19,6 +19,7 @@ Downloads, installs and configures the NewRelic agent for PHP
 import os
 import os.path
 import logging
+import shutil
 from build_pack_utils.compile_extensions import CompileExtensions
 
 _log = logging.getLogger('newrelic')
@@ -171,7 +172,7 @@ class NewRelicInstaller(object):
         dest        = os.path.join(self._ctx['BUILD_DIR'], '.profile.d', '0_newrelic_env.sh')
         dest_folder = os.path.join(self._ctx['BUILD_DIR'], '.profile.d')
         self.create_folder(dest_folder)
-        os.copy(source, dest)
+        shutil.copyfile(source, dest)
 
 # Extension Methods
 def preprocess_commands(ctx):
