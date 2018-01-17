@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = FDescribe("Composer", func() {
+var _ = Describe("Composer", func() {
 	var app *cutlass.App
 	AfterEach(func() { app = DestroyApp(app) })
 
