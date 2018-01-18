@@ -14,7 +14,7 @@ var _ = Describe("Composer with version set to 'latest'", func() {
 	var app *cutlass.App
 	AfterEach(func() { app = DestroyApp(app) })
 
-	It("", func() {
+	FIt("", func() {
 		app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "composer_latest_version"))
 		app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 

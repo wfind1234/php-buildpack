@@ -23,7 +23,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 				PushAppAndConfirm(app)
 			})
 
-			It("logs that phpredis could not connect to a server", func() {
+			FIt("logs that phpredis could not connect to a server", func() {
 				body, headers, err := app.Get("/", nil)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(headers).To(HaveKeyWithValue("StatusCode", []string{"500"}))

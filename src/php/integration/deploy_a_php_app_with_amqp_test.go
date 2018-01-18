@@ -17,7 +17,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 
 	Context("deploying a basic PHP app using AMQP module", func() {
 		Context("after the AMQP module has been loaded into PHP", func() {
-			It("succeeds", func() {
+			FIt("succeeds", func() {
 				app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "with_amqp"))
 				app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 				PushAppAndConfirm(app)
