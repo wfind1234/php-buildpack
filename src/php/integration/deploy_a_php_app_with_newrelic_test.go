@@ -17,7 +17,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 	Context("in offline mode", func() {
 		BeforeEach(SkipUnlessCached)
 
-		FIt("succeeds", func() {
+		It("succeeds", func() {
 			app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "with_newrelic"))
 			app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 			app.SetEnv("BP_DEBUG", "true")

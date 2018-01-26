@@ -20,7 +20,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 		app.SetEnv("BP_DEBUG", "1")
 	})
 
-	FIt("deploying a basic PHP app", func() {
+	It("deploying a basic PHP app", func() {
 		PushAppAndConfirm(app)
 
 		By("installs a current version of PHP")
