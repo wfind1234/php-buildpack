@@ -2,8 +2,8 @@ package integration_test
 
 import (
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 
 	"github.com/cloudfoundry/libbuildpack"
 	"github.com/cloudfoundry/libbuildpack/cutlass"
@@ -14,9 +14,9 @@ import (
 
 func ItLoadsAllTheModules(app *cutlass.App, phpVersion string) {
 	var manifest struct {
-		Dependencies []struct{
-			Name string `json:"name"`
-			Version string `json:"version"`
+		Dependencies []struct {
+			Name    string   `json:"name"`
+			Version string   `json:"version"`
 			Modules []string `json:"modules"`
 		} `json:"dependencies"`
 	}
@@ -28,7 +28,6 @@ func ItLoadsAllTheModules(app *cutlass.App, phpVersion string) {
 			break
 		}
 	}
-
 
 	By("logs each module on the info page", func() {
 		Expect(app.Stdout.String()).To(ContainSubstring("PHP " + phpVersion))
@@ -63,27 +62,27 @@ var _ = Describe("CF PHP Buildpack", func() {
 		})
 
 		It("deploying a basic PHP7.0 app that loads all prepackaged extensions", func() {
-				app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "php_7_all_modules"))
-				app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
+			app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "php_7_all_modules"))
+			app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 
-				By("warns about deprecated PHP_EXTENSIONS", func() {
-					PushAppAndConfirm(app)
-					Expect(app.Stdout.String()).To(ContainSubstring("Warning: PHP_EXTENSIONS in options.json is deprecated."))
-				})
+			By("warns about deprecated PHP_EXTENSIONS", func() {
+				PushAppAndConfirm(app)
+				Expect(app.Stdout.String()).To(ContainSubstring("Warning: PHP_EXTENSIONS in options.json is deprecated."))
+			})
 
-				ItLoadsAllTheModules(app, "7.0")
+			ItLoadsAllTheModules(app, "7.0")
 		})
 
 		It("deploying a basic PHP7.1 app that loads all prepackaged extensions", func() {
-				app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "php_71_all_modules"))
-				app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
+			app = cutlass.New(filepath.Join(bpDir, "cf_spec", "fixtures", "php_71_all_modules"))
+			app.SetEnv("COMPOSER_GITHUB_OAUTH_TOKEN", os.Getenv("COMPOSER_GITHUB_OAUTH_TOKEN"))
 
-				By("warns about deprecated PHP_EXTENSIONS", func() {
-					PushAppAndConfirm(app)
-					Expect(app.Stdout.String()).To(ContainSubstring("Warning: PHP_EXTENSIONS in options.json is deprecated."))
-				})
+			By("warns about deprecated PHP_EXTENSIONS", func() {
+				PushAppAndConfirm(app)
+				Expect(app.Stdout.String()).To(ContainSubstring("Warning: PHP_EXTENSIONS in options.json is deprecated."))
+			})
 
-				ItLoadsAllTheModules(app, "7.1")
+			ItLoadsAllTheModules(app, "7.1")
 		})
 	})
 

@@ -65,10 +65,11 @@ func CompileExtensionPackage(bpDir, version string, cached bool) (string, error)
 	if cached {
 		zipFile = fmt.Sprintf("%s_buildpack-cached-v%s.zip", manifest.Language, version)
 	}
-	zipFile = filepath.Join(dir, zipFile)
-	fmt.Printf("\n\n****** File: %v *****\n\n\n", zipFile)
+	if err := libbuildpack.CopyFile(filepath.Join(dir, zipFile), filepath.Join(bpDir, zipFile)); err != nil {
+		return "", err
+	}
 
-	return zipFile, nil
+	return filepath.Join(dir, zipFile), nil
 }
 
 func Package(bpDir, cacheDir, version string, cached bool) (string, error) {
@@ -262,7 +263,7 @@ func copyDirectory(srcDir string) (string, error) {
 			return err
 		}
 
-		if filepath.Base(path) == ".git" || path == "tests" {
+		if path == ".git" || path == "tests" {
 			return filepath.SkipDir
 		}
 
