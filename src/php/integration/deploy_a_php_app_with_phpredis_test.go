@@ -13,7 +13,7 @@ import (
 
 var _ = Describe("CF PHP Buildpack", func() {
 	var app *cutlass.App
-	AfterEach(func() { app = DestroyApp(app) })
+	// AfterEach(func() { app = DestroyApp(app) })
 
 	Context("deploying a basic PHP app using phpredis module", func() {
 		Context("after the phpredis module has been loaded into PHP", func() {
@@ -29,7 +29,8 @@ var _ = Describe("CF PHP Buildpack", func() {
 				Expect(headers).To(HaveKeyWithValue("StatusCode", []string{"500"}))
 				Expect(body).To(ContainSubstring("Redis Connection with phpredis"))
 
-				Eventually(app.Stdout.String, 10*time.Second).Should(ContainSubstring("PHP message: PHP Fatal error:  Uncaught exception 'RedisException' with message 'Redis server went away'"))
+				// Eventually(app.Stdout.String, 10*time.Second).Should(ContainSubstring("PHP message: PHP Fatal error:  Uncaught exception 'RedisException' with message 'Redis server went away'"))
+				Eventually(app.Stdout.String, 10*time.Second).Should(ContainSubstring("PHP message: PHP Fatal error:  Uncaught RedisException: Redis server went away"))
 			})
 		})
 	})

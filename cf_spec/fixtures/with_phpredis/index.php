@@ -9,12 +9,29 @@
   use CfCommunity\CfHelper\CfHelper;
   $cfHelper = CfHelper::getInstance();
 
-  # Get Redis VCAP_SERVICES values
+  # Try to fetch Redis VCAP_SERVICES values
   $serviceManager = $cfHelper->getServiceManager();
   $redisService = $serviceManager->getService('.*redis.*');
-  $redisUrl = $redisService->getValue('hostname');
-  $redisPort = $redisService->getValue('port');
-  $redisPassword = $redisService->getValue('password');
+
+  $defaultUrl = "localhost";
+  $defaulPort = 6379;
+  $defaulPassword = "password";
+
+  # Prevent PHP Errors if no service is bound
+  if (is_null($redisService)){
+    $redisUrl = $defaultUrl;
+    $redisPort = $defaulPort;
+    $redisPassword = $defaulPassword;
+  }
+  else {
+    $redisUrl = $redisService->getValue('hostname');
+    $redisPort = $redisService->getValue('port');
+    $redisPassword = $redisService->getValue('password');
+  }
+
+  print "<p>RedisUrl: $redisUrl</p>";
+  print "<p>RedisPort: $redisPort</p>";
+  print "<p>RedisUrl: redacted</p>";
 
   # Establish Redis connection and authenticate
   $redis = new Redis();
