@@ -13,7 +13,7 @@ import (
 
 var _ = Describe("CF PHP Buildpack", func() {
 	var app *cutlass.App
-	// AfterEach(func() { app = DestroyApp(app) })
+	AfterEach(func() { app = DestroyApp(app) })
 
 	Context("deploying a basic PHP app using phpredis module", func() {
 		Context("after the phpredis module has been loaded into PHP", func() {
@@ -23,7 +23,7 @@ var _ = Describe("CF PHP Buildpack", func() {
 				PushAppAndConfirm(app)
 			})
 
-			FIt("logs that phpredis could not connect to a server", func() {
+			It("logs that phpredis could not connect to a server", func() {
 				body, headers, err := app.Get("/", nil)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(headers).To(HaveKeyWithValue("StatusCode", []string{"500"}))
