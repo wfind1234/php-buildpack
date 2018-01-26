@@ -15,10 +15,61 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/cloudfoundry/libbuildpack"
 	yaml "gopkg.in/yaml.v2"
 )
 
 var CacheDir = filepath.Join(os.Getenv("HOME"), ".buildpack-packager", "cache")
+
+func CompileExtensionPackage(bpDir, version string, cached bool) (string, error) {
+	bpDir, err := filepath.Abs(bpDir)
+	if err != nil {
+		panic(err)
+		return "", err
+	}
+	dir, err := copyDirectory(bpDir)
+	if err != nil {
+		panic(err)
+		return "", err
+	}
+
+	err = ioutil.WriteFile(filepath.Join(dir, "VERSION"), []byte(version), 0644)
+	if err != nil {
+		panic(err)
+		return "", err
+	}
+
+	isCached := "--uncached"
+	if cached {
+		isCached = "--cached"
+	}
+	cmd := exec.Command("bundle", "exec", "buildpack-packager", isCached)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Env = append(os.Environ(), "BUNDLE_GEMFILE=cf.Gemfile")
+	cmd.Dir = dir
+	if err := cmd.Run(); err != nil {
+		panic(err)
+		return "", err
+	}
+
+	var manifest struct {
+		Language string `yaml:"language"`
+	}
+	if err := libbuildpack.NewYAML().Load(filepath.Join(bpDir, "manifest.yml"), &manifest); err != nil {
+		panic(err)
+		return "", err
+	}
+
+	zipFile := fmt.Sprintf("%s_buildpack-v%s.zip", manifest.Language, version)
+	if cached {
+		zipFile = fmt.Sprintf("%s_buildpack-cached-v%s.zip", manifest.Language, version)
+	}
+	zipFile = filepath.Join(dir, zipFile)
+	fmt.Printf("\n\n****** File: %v *****\n\n\n", zipFile)
+
+	return zipFile, nil
+}
 
 func Package(bpDir, cacheDir, version string, cached bool) (string, error) {
 	bpDir, err := filepath.Abs(bpDir)
@@ -207,8 +258,11 @@ func copyDirectory(srcDir string) (string, error) {
 			return err
 		}
 		path, err = filepath.Rel(srcDir, path)
+		if err != nil {
+			return err
+		}
 
-		if filepath.Base(path) == ".git" {
+		if filepath.Base(path) == ".git" || path == "tests" {
 			return filepath.SkipDir
 		}
 
