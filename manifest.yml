@@ -5,6 +5,9 @@ exclude_files:
 - ".gitignore"
 - ".gitmodules"
 - cf_spec/
+- pkg/
+- src/php/
+- .bin/
 - log/
 - tests/
 - cf.Gemfile
@@ -54,6 +57,11 @@ dependency_deprecation_dates:
   version_line: '7.1'
   name: php
   date: 2019-12-01
+  link: http://php.net/supported-versions.php
+- match: 7.2.\d+
+  version_line: '7.2'
+  name: php
+  date: 2020-11-30
   link: http://php.net/supported-versions.php
 - match: 1.10.\d+
   version_line: '1.10'
